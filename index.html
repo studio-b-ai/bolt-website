@@ -11,7 +11,7 @@
 <meta property="og:url" content="https://bolt.b.studio">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 
 <style>
 /* ══════════════════════════════════════════════════════════════
@@ -1254,6 +1254,238 @@ footer {
 }
 .fade-in.visible { opacity: 1; transform: translateY(0); }
 
+/* Motion-safe fallback: no animation, always visible. Also catches
+   the case where IntersectionObserver never fires (print, screenshot
+   tools, archival crawlers, link-preview bots). */
+@media (prefers-reduced-motion: reduce) {
+  .fade-in { opacity: 1; transform: none; transition: none; }
+}
+.no-js .fade-in { opacity: 1; transform: none; }
+
+/* ══════════════════════════════════════════════════════════════
+   BILLBOARD UPLIFT — sectional accents, color-blocked modules,
+   oversized stats, yolk closing panel, operator signature.
+   Rhymes with b.studio Billboard without adopting its palette.
+   ══════════════════════════════════════════════════════════════ */
+
+/* Caution-stripe divider — navy + warehouse-yellow diagonals */
+.stripe-rule {
+  height: 2.2rem;
+  background:
+    repeating-linear-gradient(
+      -45deg,
+      var(--navy) 0px,
+      var(--navy) 18px,
+      var(--yellow) 18px,
+      var(--yellow) 36px
+    );
+  border-top: 3px solid var(--navy);
+  border-bottom: 3px solid var(--navy);
+}
+.stripe-rule.signal {
+  background:
+    repeating-linear-gradient(
+      -45deg,
+      var(--signal) 0px,
+      var(--signal) 18px,
+      var(--yellow) 18px,
+      var(--yellow) 36px
+    );
+}
+@media (max-width: 680px) { .stripe-rule { height: 1.6rem; } }
+
+/* Color-blocked 8 modules — each module gets a saturated bg */
+.module {
+  border-right: 2px solid var(--navy) !important;
+  border-bottom: 2px solid var(--navy) !important;
+  transition: transform 0.18s cubic-bezier(0.16,1,0.3,1), background 0.2s;
+  min-height: 280px;
+  display: flex;
+  flex-direction: column;
+}
+.modules-grid {
+  border-top: 2px solid var(--navy) !important;
+  border-left: 2px solid var(--navy) !important;
+}
+.module:hover { transform: translateY(-3px); }
+.module::before { height: 0 !important; display: none; }
+
+.module .module-id {
+  padding: 0.28rem 0.55rem;
+  background: var(--navy);
+  color: var(--yellow);
+  font-weight: 700 !important;
+  align-self: flex-start;
+}
+.module h3 {
+  font-family: var(--f-sans);
+  font-weight: 900 !important;
+  font-size: 1.35rem !important;
+  letter-spacing: -0.025em !important;
+  margin-top: auto;
+  padding-top: 1rem;
+}
+.module p { font-size: 0.88rem !important; line-height: 1.55 !important; }
+
+.module.m-01 { background: var(--yellow);    color: var(--navy); }
+.module.m-01 p { color: var(--navy-70); }
+.module.m-01 .module-id { background: var(--navy); color: var(--yellow); }
+
+.module.m-02 { background: var(--navy);      color: var(--white); }
+.module.m-02 h3 { color: var(--white); }
+.module.m-02 p { color: rgba(255,255,255,0.72); }
+.module.m-02 .module-id { background: var(--yellow); color: var(--navy); }
+
+.module.m-03 { background: var(--white);     color: var(--navy); }
+.module.m-03 p { color: var(--steel); }
+.module.m-03 .module-id { background: var(--signal); color: var(--white); }
+
+.module.m-04 { background: var(--signal);    color: var(--white); }
+.module.m-04 h3 { color: var(--white); }
+.module.m-04 p { color: rgba(255,255,255,0.85); }
+.module.m-04 .module-id { background: var(--yellow); color: var(--navy); }
+
+.module.m-05 { background: var(--concrete);  color: var(--navy); }
+.module.m-05 p { color: var(--steel); }
+.module.m-05 .module-id { background: var(--navy); color: var(--yellow); }
+
+.module.m-06 { background: var(--midnight);  color: var(--white); }
+.module.m-06 h3 { color: var(--white); }
+.module.m-06 p { color: rgba(255,255,255,0.72); }
+.module.m-06 .module-id { background: var(--yellow); color: var(--navy); }
+
+.module.m-07 { background: var(--yellow);    color: var(--navy); }
+.module.m-07 p { color: var(--navy-70); }
+.module.m-07 .module-id { background: var(--navy); color: var(--yellow); }
+
+.module.m-08 { background: var(--navy);      color: var(--white); }
+.module.m-08 h3 { color: var(--white); }
+.module.m-08 p { color: rgba(255,255,255,0.72); }
+.module.m-08 .module-id { background: var(--signal); color: var(--white); }
+
+/* Rotating "M-X" sticker in top-right of each module */
+.module-sticker {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  font-family: var(--f-mono);
+  font-size: 0.55rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-weight: 700;
+  padding: 0.25rem 0.55rem;
+  border: 2px solid currentColor;
+  background: transparent;
+  transform: rotate(6deg);
+  opacity: 0.7;
+}
+
+/* Oversized proof-band stats */
+.proof-stats { gap: 1.5rem !important; }
+.proof-band .proof-stat-n { font-size: clamp(3rem, 6vw, 5.2rem) !important; font-weight: 900 !important; color: var(--yellow) !important; }
+.proof-band .proof-stat-l { font-size: 0.62rem !important; }
+
+/* Operator signature in proof band */
+.proof-sig {
+  margin-top: 2.5rem;
+  padding-top: 1.8rem;
+  border-top: 2px solid rgba(255,255,255,0.2);
+  display: flex;
+  align-items: end;
+  gap: 1.2rem;
+  flex-wrap: wrap;
+}
+.proof-sig .sig-hand {
+  font-family: 'Caveat', cursive;
+  font-weight: 700;
+  font-size: 2.3rem;
+  line-height: 1;
+  color: var(--yellow);
+  transform: rotate(-2deg);
+  transform-origin: left center;
+}
+.proof-sig .sig-meta {
+  font-family: var(--f-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.55);
+  line-height: 1.6;
+  padding-left: 1.2rem;
+  border-left: 2px solid rgba(255,255,255,0.2);
+}
+.proof-sig .sig-meta strong { color: var(--white); font-weight: 600; }
+
+/* Closing section → warehouse-yellow commitment panel */
+.closing {
+  background: var(--yellow) !important;
+  border-top: 4px solid var(--navy);
+  border-bottom: 4px solid var(--navy);
+}
+.closing h2 em {
+  background: var(--navy) !important;
+  color: var(--yellow) !important;
+}
+.closing-body { color: var(--navy-70) !important; }
+.closing-meta { color: var(--navy-70) !important; }
+.closing-meta a { color: var(--navy) !important; border-bottom-color: var(--navy-40) !important; }
+
+/* Stamped "DEMO IN 30 MIN" sticker on closing */
+.closing-stamp {
+  display: inline-block;
+  padding: 0.4rem 0.85rem;
+  background: var(--navy);
+  color: var(--yellow);
+  font-family: var(--f-mono);
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  border: 2.5px solid var(--navy);
+  box-shadow: 5px 5px 0 var(--signal);
+  transform: rotate(-2deg);
+  margin-bottom: 1.8rem;
+}
+
+/* Chunky button — matches Billboard box-shadow aesthetic */
+.btn-yellow {
+  background: var(--navy) !important;
+  color: var(--yellow) !important;
+  border: 3px solid var(--navy) !important;
+  box-shadow: 6px 6px 0 var(--white);
+  transition: transform 0.1s, box-shadow 0.1s, background 0.15s;
+}
+.btn-yellow:hover {
+  background: var(--signal) !important;
+  color: var(--white) !important;
+  border-color: var(--signal) !important;
+  transform: translate(3px, 3px);
+  box-shadow: 3px 3px 0 var(--white);
+}
+.btn-ghost {
+  background: transparent;
+  color: var(--navy) !important;
+  border: 3px solid var(--navy) !important;
+}
+.btn-ghost:hover { background: var(--navy) !important; color: var(--yellow) !important; }
+
+/* Nav CTA — hard-edge box-shadow */
+.nav-cta {
+  border: 2.5px solid var(--navy) !important;
+  box-shadow: 4px 4px 0 var(--yellow) !important;
+  transition: transform 0.1s, box-shadow 0.1s, background 0.15s !important;
+}
+.nav-cta:hover {
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0 var(--yellow) !important;
+}
+
+@media (max-width: 680px) {
+  .nav-cta { box-shadow: 3px 3px 0 var(--yellow) !important; }
+  .btn-yellow { box-shadow: 4px 4px 0 var(--white); }
+  .module { min-height: 220px; }
+}
+
 /* ── RESPONSIVE ────────────────────────────────────────────── */
 @media (max-width: 920px) {
   .cut-flow { grid-template-columns: 1fr; gap: 1rem; }
@@ -1447,6 +1679,8 @@ footer {
 </section>
 
 <!-- ── MODULES ───────────────────────────────────────────── -->
+<div class="stripe-rule" aria-hidden="true"></div>
+
 <section class="section fade-in" id="modules">
   <div class="section-intro">
     <div class="section-intro-left">
@@ -1459,43 +1693,51 @@ footer {
   </div>
 
   <div class="modules-grid">
-    <div class="module">
+    <div class="module m-01">
       <span class="module-id">M-01&nbsp;·&nbsp;CUT-TO-ORDER</span>
+      <span class="module-sticker">01 / 08</span>
       <h3>Cut-to-order with remainders</h3>
       <p>Subdivide master units. Bolt tracks the remainder automatically — same lot, updated footage, ready for the next order. No manual adjustments, no spreadsheet reconciliation.</p>
     </div>
-    <div class="module">
+    <div class="module m-02">
       <span class="module-id">M-02&nbsp;·&nbsp;LOT</span>
+      <span class="module-sticker">02 / 08</span>
       <h3>Full lot traceability</h3>
       <p>Every foot carries its identity: manufacturing lot, dye lot, heat number, production run. Trace from receiving through every cut and shipment in seconds, not hours.</p>
     </div>
-    <div class="module">
+    <div class="module m-03">
       <span class="module-id">M-03&nbsp;·&nbsp;QUALITY</span>
+      <span class="module-sticker">03 / 08</span>
       <h3>Quality inspection</h3>
       <p>Visual defect taxonomy — jacket damage, shade variance, braid exposure. Photo capture, pass/fail/quarantine disposition, vendor scorecards that track who sends you problems.</p>
     </div>
-    <div class="module">
+    <div class="module m-04">
       <span class="module-id">M-04&nbsp;·&nbsp;MOBILE</span>
+      <span class="module-sticker">04 / 08</span>
       <h3>Offline mobile app</h3>
       <p>Twelve screens covering receiving, putaway, picking, packing, inspection, and cycle counting. Keyence barcode scanners. Works in warehouses with dead spots. English and Spanish.</p>
     </div>
-    <div class="module">
+    <div class="module m-05">
       <span class="module-id">M-05&nbsp;·&nbsp;LTL</span>
+      <span class="module-sticker">05 / 08</span>
       <h3>LTL + parcel shipping</h3>
       <p>Eight LTL carriers with real-time rate shopping, freight class calculation, and BOL generation. ShipEngine for parcel. All on the same screen as the shipment confirmation.</p>
     </div>
-    <div class="module">
+    <div class="module m-06">
       <span class="module-id">M-06&nbsp;·&nbsp;RMA</span>
+      <span class="module-sticker">06 / 08</span>
       <h3>Returns &amp; RMA</h3>
       <p>Multi-reason returns with disposition: rework, return to vendor, scrap, downgrade. Track why products come back and which vendors are responsible.</p>
     </div>
-    <div class="module">
+    <div class="module m-07">
       <span class="module-id">M-07&nbsp;·&nbsp;INTELLIGENCE</span>
+      <span class="module-sticker">07 / 08</span>
       <h3>AI demand planning</h3>
       <p>ABC inventory classification. Vendor lead time learning from actual delivery dates. Seasonal forecasting and safety stock optimization. Reorder signals weeks before stockout.</p>
     </div>
-    <div class="module">
+    <div class="module m-08">
       <span class="module-id">M-08&nbsp;·&nbsp;ACUMATICA</span>
+      <span class="module-sticker">08 / 08</span>
       <h3>Acumatica integration</h3>
       <p>Bidirectional REST API. Customers, inventory, orders, shipments, POs. Custom DAC fields via CI/CD. No middleware. No iPaaS. No manual re-entry.</p>
     </div>
@@ -1709,6 +1951,8 @@ footer {
 </section>
 
 <!-- ── HERITAGE REFERENCE ────────────────────────────────── -->
+<div class="stripe-rule signal" aria-hidden="true"></div>
+
 <section class="proof-band fade-in">
   <div class="proof-inner">
     <span class="eyebrow eyebrow-on-dark">§07 &nbsp;·&nbsp; In production</span>
@@ -1739,12 +1983,18 @@ footer {
     </div>
 
     <a href="/customers/heritage.html" class="proof-link">Read the full Heritage case study</a>
+
+    <div class="proof-sig">
+      <span class="sig-hand">— the ops floor</span>
+      <span class="sig-meta"><strong>Heritage Fabrics, Saint Paul</strong><br>Running Bolt in production · April 2026</span>
+    </div>
   </div>
 </section>
 
 <!-- ── CLOSING CTA ───────────────────────────────────────── -->
 <section class="closing fade-in">
   <div class="closing-inner">
+    <span class="closing-stamp">● Live in 30 min · No slides</span>
     <h2>See Bolt with <em>your</em> inventory.</h2>
     <p class="closing-body">Thirty minutes. No slides. We&apos;ll load a demo environment with your products, your measurement units, and your typical order patterns. You ask questions. We show the product. If it&apos;s a fit, we talk about onboarding. If it&apos;s not, we tell you.</p>
     <div class="closing-actions">
@@ -1799,12 +2049,23 @@ footer {
 
 <script>
 (function() {
+  // Safety net: if IntersectionObserver is unavailable (print preview,
+  // archival crawlers, old browsers) or never fires within 1.5s, reveal
+  // everything so content is never silently blank.
+  if (!('IntersectionObserver' in window)) {
+    document.querySelectorAll('.fade-in').forEach(function(el) { el.classList.add('visible'); });
+    return;
+  }
   var observer = new IntersectionObserver(function(entries) {
     entries.forEach(function(entry) {
       if (entry.isIntersecting) entry.target.classList.add('visible');
     });
   }, { threshold: 0.08, rootMargin: '0px 0px -60px 0px' });
   document.querySelectorAll('.fade-in').forEach(function(el) { observer.observe(el); });
+  // Belt-and-suspenders: reveal anything still hidden after 1.5s.
+  setTimeout(function() {
+    document.querySelectorAll('.fade-in:not(.visible)').forEach(function(el) { el.classList.add('visible'); });
+  }, 1500);
 })();
 </script>
 
